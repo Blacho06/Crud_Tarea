@@ -3,13 +3,10 @@
 use App\Http\Controllers\ProductoController;
 use Illuminate\Support\Facades\Route;
 
-// Ruta principal del CRUD
+// Ruta principal redirige al índice de productos
 Route::get('/', function () {
-    return redirect()->route('.index');
+    return redirect()->route('productos.index');
 });
 
-// Rutas tipo resource para el CRUD de productos
-Route::prefix('users/Crud_Tarea')->group(function () {
-    Route::resource('productos', ProductoController::class);
-});
-
+// Rutas del CRUD de productos
+Route::resource('productos', ProductoController::class);
