@@ -2,26 +2,74 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Editar Producto</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Usuario</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; max-width: 600px; }
+        h1 { margin-bottom: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        textarea { resize: vertical; min-height: 80px; }
+        .error { background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 4px; margin-bottom: 20px; }
+        .button-group { margin-top: 20px; }
+        .btn-cancelar, .btn-guardar { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; }
+        .btn-cancelar { background-color: #6c757d; color: white; }
+        .btn-guardar { background-color: #dc3545; color: white; }
+    </style>
 </head>
 <body>
-    <h1>Editar producto</h1>
-
-    <form action="{{ route('productos.update', $producto) }}" method="POST">
+    <h1>Editar Usuario</h1>
+    
+    @if ($errors->any())
+        <div class="error">
+            <strong>¡Por favor corrige los errores!</strong>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+    
+    <form action="{{ route('usuarios.update', $usuario) }}" method="POST">
         @csrf
         @method('PUT')
-        <label>Título:</label>
-        <input type="text" name="titulo" value="{{ $producto->titulo }}" required><br>
-
-        <label>Descripción:</label>
-        <textarea name="descripcion">{{ $producto->descripcion }}</textarea><br>
-
-        <label>Estado:</label>
-        <input type="text" name="estado" value="{{ $producto->estado }}"><br>
-
-        <button type="submit">Actualizar</button>
+        
+        <div class="form-group">
+            <label for="name">Nombre completo</label>
+            <input type="text" id="name" name="name" value="{{ $usuario->name }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Correo electrónico</label>
+            <input type="email" id="email" name="email" value="{{ $usuario->email }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="phone">Teléfono</label>
+            <input type="text" id="phone" name="phone" value="{{ $usuario->phone ?? '' }}" placeholder="+34 600 123 456">
+        </div>
+        
+        <div class="form-group">
+            <label for="role">Rol</label>
+            <select id="role" name="role" required>
+                <option value="">Seleccionar...</option>
+                <option value="Administrador" {{ $usuario->role === 'Administrador' ? 'selected' : '' }}>Administrador</option>
+                <option value="Usuario" {{ $usuario->role === 'Usuario' ? 'selected' : '' }}>Usuario</option>
+                <option value="Editor" {{ $usuario->role === 'Editor' ? 'selected' : '' }}>Editor</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="notes">Notas adicionales</label>
+            <textarea id="notes" name="notes" placeholder="Información adicional sobre el usuario">{{ $usuario->notes ?? '' }}</textarea>
+        </div>
+        
+        <div class="button-group">
+            <a href="{{ route('usuarios.index') }}" class="btn-cancelar">Cancelar</a>
+            <button type="submit" class="btn-guardar">Guardar</button>
+        </div>
     </form>
-
-    <a href="{{ route('productos.index') }}">⬅️ Volver</a>
 </body>
 </html>

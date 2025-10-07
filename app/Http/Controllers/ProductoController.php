@@ -10,7 +10,12 @@ class ProductoController extends Controller
     public function index()
     {
         $productos = Producto::all();
-        return view('user.Crud_Tarea.index', compact('productos'));
+        return view('Tareas.index', compact('productos'));
+    }
+
+    public function create()
+    {
+        return view('Tareas.create');
     }
 
     public function store(Request $request)
@@ -27,6 +32,11 @@ class ProductoController extends Controller
 
         Producto::create($request->all());
         return redirect()->route('productos.index')->with('success', 'Registro creado correctamente.');
+    }
+
+    public function edit(Producto $producto)
+    {
+        return view('Tareas.edit', compact('producto'));
     }
 
     public function update(Request $request, Producto $producto)
